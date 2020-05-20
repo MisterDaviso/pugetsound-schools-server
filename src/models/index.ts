@@ -1,6 +1,7 @@
 let mongoose = require('mongoose')
+require('dotenv')
 
-mongoose.connect('mongodb://localhost/school', {
+mongoose.connect(process.env.MONGODB_URI ||'mongodb://localhost/school', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true
