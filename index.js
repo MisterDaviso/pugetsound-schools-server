@@ -26,6 +26,7 @@ app.use('/auth', require('./dist/controllers/auth'))
 app.use('/profile', expressJwt({secret: process.env.JWT_SECRET}), require('./dist/controllers/profile'))
 app.use('/classes', require('./dist/controllers/classes'))
 app.use('/assignments', require('./dist/controllers/assignments'))
+app.use('/users', require('./dist/controllers/users'))
 
 app.get('/', (req,res) => {
   res.send({ message: "Welcome to the base route!"})

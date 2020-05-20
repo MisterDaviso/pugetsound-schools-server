@@ -142,3 +142,6 @@ build-iPhoneSimulator/
 .rvmrc
 
 # End of https://www.gitignore.io/api/ruby,node,macos
+
+## Test files
+testFile.js

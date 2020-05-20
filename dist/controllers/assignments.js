@@ -1,8 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Assignments Controller
+ */
 var express_1 = require("express");
 var db = require('../models');
-//let router = require('express').Router()
 var router = express_1.Router();
 // POST a new assignment to a class
 router.post('/class/:classId', function (req, res) {

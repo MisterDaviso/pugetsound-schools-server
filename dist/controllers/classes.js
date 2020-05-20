@@ -1,8 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Classes Controller
+ */
 var express_1 = require("express");
 var db = require('../models');
-//let router = require('express').Router()
 var router = express_1.Router();
 // POST a new class
 router.post('/', function (req, res) {
@@ -16,11 +18,6 @@ router.post('/', function (req, res) {
 });
 // GET a class by ID 
 router.get('/:id', function (req, res) {
-    console.log("Database:", db);
-    console.log("Class:", db.Class);
-    //console.log("Homework:",db.HomeWork)
-    console.log("Assignment:", db.Assignment);
-    console.log("User:", db.User);
     db.Class.findOne({ _id: req.params.id })
         .then(function (c) {
         res.send(c);
@@ -28,6 +25,9 @@ router.get('/:id', function (req, res) {
         .catch(function (err) {
         console.log("Error:", err);
     });
+});
+// PUT more/less students into a class
+router.put('/students/:id', function (req, res) {
 });
 // PUT updated info into a class by ID
 router.put('/:id', function (req, res) {
