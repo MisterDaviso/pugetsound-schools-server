@@ -1,11 +1,11 @@
 {
-  "name": "mern-auth-server",
+  "name": "pugetsound-schools-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "./index.js"
+    "start": "node index.js"
   },
   "engines": {
     "node": "v11.12.0"
