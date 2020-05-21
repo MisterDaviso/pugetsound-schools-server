@@ -69,10 +69,19 @@ router.get('/:id', function (req, res) {
  * @param req.body.teacher      The id of the teacher who made the assignment
  * @param req.body.students     An array of student ref id's
  * @param req.body.question     A string containing the question(s)
+ *
+ * @todo Remove students as a req.body requirement
  */
 router.post('/class/:classid', function (req, res) {
+    var studentArray;
+    if (!Array.isArray(req.body.students)) {
+        studentArray = [req.body.students];
+    }
+    else {
+        studentArray = req.body.students;
+    }
     var students = [];
-    req.body.students.forEach(function (student) {
+    studentArray.forEach(function (student) {
         students.push({
             id: student,
             grade: '',

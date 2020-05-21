@@ -75,10 +75,16 @@ router.get('/:id', (req:Request, res:Response) => {
  * @param req.body.teacher      The id of the teacher who made the assignment
  * @param req.body.students     An array of student ref id's
  * @param req.body.question     A string containing the question(s)
+ * 
+ * @todo Remove students as a req.body requirement
  */
 router.post('/class/:classid', (req:Request, res:Response) => {
+    let studentArray:any[]
+    if(!Array.isArray(req.body.students)) {
+        studentArray = [req.body.students]
+    } else {studentArray = req.body.students}
     let students:{}[] = []
-    req.body.students.forEach((student:string) => {
+    studentArray.forEach((student:string) => {
         students.push({
             id: student,
             grade: '',
@@ -90,6 +96,7 @@ router.post('/class/:classid', (req:Request, res:Response) => {
         teacher: req.body.teacher,
         students: students,
         question: req.body.question
+
     })
     .then((assignment:IAssignment) => {
         res.send(assignment)

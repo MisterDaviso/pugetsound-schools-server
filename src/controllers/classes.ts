@@ -18,8 +18,6 @@ const router = Router()
 router.get('/', (req:Request, res:Response) => {
     db.Class.find()
     .then((c:[IClass]) => {
-        console.log("Class:",c[0])
-        console.log("Students:",c[0].students)
         res.send(c)
     })
     .catch((err:Error) => {

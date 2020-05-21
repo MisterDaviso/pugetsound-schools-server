@@ -17,8 +17,6 @@ var router = express_1.Router();
 router.get('/', function (req, res) {
     db.Class.find()
         .then(function (c) {
-        console.log("Class:", c[0]);
-        console.log("Students:", c[0].students);
         res.send(c);
     })
         .catch(function (err) {

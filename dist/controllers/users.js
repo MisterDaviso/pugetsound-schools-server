@@ -89,7 +89,26 @@ router.put('/', function (req, res) {
  */
 router.put('/classes/register', function (req, res) {
     // First, get the list of classes the student is currently signed up for
-    // Second, create two new arrays: Old classes and new classes
+    db.Class.find({ students: { $elemMatch: { student: req.params.id } } })
+        .then(function (currentClasses) {
+        // Second, create two new arrays: Old classes and new classes
+        // One is classes the student is no longer signed up for,
+        // The other are their new classes
+        var currentClassIds = currentClasses.map(function (c) { return c._id; });
+        var signup;
+        var resign;
+        currentClassIds.forEach(function (c) { if (!req.body.classes.includes(c)) {
+            resign.push(c);
+        } });
+        req.body.classes.forEach(function (c) { if (!currentClassIds.includes(c)) {
+            signup.push(c);
+        } });
+        // Third, remove the student from their old classes
+        db.Class.update;
+    })
+        .catch(function (err) {
+        console.log("Error:", err);
+    });
 });
 // Export the router
 module.exports = router;

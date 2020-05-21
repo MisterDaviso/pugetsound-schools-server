@@ -6,6 +6,7 @@
 import {Request, Response, Router} from 'express'
 let db = require('../models')
 import {IUser} from '../models/user'
+import {IClass} from '../models/class'
 const router = Router()
 
 
@@ -98,7 +99,22 @@ router.put('/', (req:Request, res:Response) => {
  */
 router.put('/classes/register', (req:Request, res:Response) => {
     // First, get the list of classes the student is currently signed up for
-    // Second, create two new arrays: Old classes and new classes
+    db.Class.find({students: {$elemMatch: {student: req.params.id}}})
+    .then((currentClasses:[IClass]) => {
+        // Second, create two new arrays: Old classes and new classes
+            // One is classes the student is no longer signed up for,
+            // The other are their new classes
+        let currentClassIds:any[] = currentClasses.map(c => {return c._id})
+        let signup:any[]
+        let resign:any[]
+        currentClassIds.forEach((c:string) => { if(!req.body.classes.includes(c)) {resign.push(c)} })
+        req.body.classes.forEach((c:string) => { if(!currentClassIds.includes(c)) {signup.push(c)} })
+        // Third, remove the student from their old classes
+        db.Class.update
+    })
+    .catch((err:Error) => {
+        console.log("Error:",err)
+    })
 })
 
 // Export the router
