@@ -94,10 +94,11 @@ router.put('/', (req:Request, res:Response) => {
 /**
  * @name    PUT 
  * @summary Adds the student to the provided classes
- * @param   req.body.classes  An array of class ref id's the student signs up for
+ * @param   req.body.classes    An array of class ref id's the student signs up for
+ * @param   req.params.id       The id of the student
  * @todo    Update the classes and assignments with the new information
  */
-router.put('/classes/register', (req:Request, res:Response) => {
+router.put('/classes/:id', (req:Request, res:Response) => {
     // First, get the list of classes the student is currently signed up for
     db.Class.find({students: {$elemMatch: {student: req.params.id}}})
     .then((currentClasses:[IClass]) => {
@@ -105,12 +106,33 @@ router.put('/classes/register', (req:Request, res:Response) => {
             // One is classes the student is no longer signed up for,
             // The other are their new classes
         let currentClassIds:any[] = currentClasses.map(c => {return c._id})
-        let signup:any[]
-        let resign:any[]
+        let signup:any[] = []
+        let resign:any[] = []
         currentClassIds.forEach((c:string) => { if(!req.body.classes.includes(c)) {resign.push(c)} })
         req.body.classes.forEach((c:string) => { if(!currentClassIds.includes(c)) {signup.push(c)} })
         // Third, remove the student from their old classes
-        db.Class.update
+        db.Class.update(
+            {students: {$elemMatch: {student: {$in: resign}}}}, 
+            {$pull: {students: {$elemMatch: {student:req.params.id}}}}
+        )
+        .then(() => {
+            // Fourth, add the student to their new classes
+            let newStudent:{} = {
+                student: req.body.id,
+                grade: ''
+            }
+            db.Class.update(
+                {students: {$elemMatch: {student: {$in: signup}}}}, 
+                {$push: {students: newStudent}}
+            )
+            .then(() => {
+                db.User.update({_id:req.params.id}, {classes:currentClassIds})
+                .then((student:IUser) => {res.send(student)})
+                .catch((err:Error) => {console.log("Error:",err)})
+            })
+            .catch((err:Error) => {console.log("Error:",err)})
+        })
+        .catch((err:Error) => {console.log("Error:",err)})
     })
     .catch((err:Error) => {
         console.log("Error:",err)

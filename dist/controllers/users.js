@@ -84,10 +84,11 @@ router.put('/', function (req, res) {
 /**
  * @name    PUT
  * @summary Adds the student to the provided classes
- * @param   req.body.classes  An array of class ref id's the student signs up for
+ * @param   req.body.classes    An array of class ref id's the student signs up for
+ * @param   req.params.id       The id of the student
  * @todo    Update the classes and assignments with the new information
  */
-router.put('/classes/register', function (req, res) {
+router.put('/classes/:id', function (req, res) {
     // First, get the list of classes the student is currently signed up for
     db.Class.find({ students: { $elemMatch: { student: req.params.id } } })
         .then(function (currentClasses) {
@@ -95,8 +96,8 @@ router.put('/classes/register', function (req, res) {
         // One is classes the student is no longer signed up for,
         // The other are their new classes
         var currentClassIds = currentClasses.map(function (c) { return c._id; });
-        var signup;
-        var resign;
+        var signup = [];
+        var resign = [];
         currentClassIds.forEach(function (c) { if (!req.body.classes.includes(c)) {
             resign.push(c);
         } });
@@ -104,7 +105,22 @@ router.put('/classes/register', function (req, res) {
             signup.push(c);
         } });
         // Third, remove the student from their old classes
-        db.Class.update;
+        db.Class.update({ students: { $elemMatch: { student: { $in: resign } } } }, { $pull: { students: { $elemMatch: { student: req.params.id } } } })
+            .then(function () {
+            // Fourth, add the student to their new classes
+            var newStudent = {
+                student: req.body.id,
+                grade: ''
+            };
+            db.Class.update({ students: { $elemMatch: { student: { $in: signup } } } }, { $push: { students: newStudent } })
+                .then(function () {
+                db.User.update({ _id: req.params.id }, { classes: currentClassIds })
+                    .then(function (student) { res.send(student); })
+                    .catch(function (err) { console.log("Error:", err); });
+            })
+                .catch(function (err) { console.log("Error:", err); });
+        })
+            .catch(function (err) { console.log("Error:", err); });
     })
         .catch(function (err) {
         console.log("Error:", err);
