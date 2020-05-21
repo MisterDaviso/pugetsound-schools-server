@@ -6,6 +6,10 @@ let db = require('../models')
 import {IClass} from '../models/class'
 const router = Router()
 
+/*****************************
+ * GET ROUTES
+ ****************************/
+
 /**
  * GET
  * @returns All classes in the db
@@ -23,63 +27,12 @@ router.get('/', (req:Request, res:Response) => {
 })
 
 /**
- * POST 
- * Adds a new class to the database.
- */
-router.post('/', (req:Request, res:Response) => {
-    db.Class.create(req.body)
-    .then((c:IClass) => {
-        res.send(c)
-    })
-    .catch((err:Error) => {
-        console.log("Error:",err)
-    })
-})
-
-/**
  * GET
  * @returns the specified class
  * @param id, The id of the class to return
  */
 router.get('/:id', (req:Request, res:Response) => {
     db.Class.findOne({_id:req.params.id})
-    .then((c:IClass) => {
-        res.send(c)
-    })
-    .catch((err:Error) => {
-        console.log("Error:",err)
-    })
-})
-
-/**
- * PUT
- * Adds a student to a class
- */
-router.put('/signup/:id', (req:Request, res:Response) => {
-    // Takes in an array of tuple arrays
-    let newStudent:{} = {
-        student:req.body.studentid,
-        grade:  ''
-    }
-    db.Class.updateOne(
-        {_id:req.params.id},
-        {$push: {students: newStudent}}
-    )
-    .then((c:IClass) => {
-        console.log("Successfully added student")
-        res.send(c)
-    })
-    .catch((err:Error) => {
-        console.log("Error:",err)
-    })
-})
-
-/**
- * PUT
- * Updates info about a class
- */
-router.put('/:id', (req:Request, res:Response) => {
-    db.Class.findOneAndUpdate({_id:req.params.id}, req.body)
     .then((c:IClass) => {
         res.send(c)
     })
@@ -118,4 +71,65 @@ router.get('/teacher/:id', (req:Request, res:Response) => {
     })
 })
 
+/*****************************
+ * POST ROUTES
+ ****************************/
+
+/**
+ * POST 
+ * Adds a new class to the database.
+ */
+router.post('/', (req:Request, res:Response) => {
+    db.Class.create(req.body)
+    .then((c:IClass) => {
+        res.send(c)
+    })
+    .catch((err:Error) => {
+        console.log("Error:",err)
+    })
+})
+
+/*****************************
+ * PUT ROUTES
+ ****************************/
+
+/**
+ * PUT
+ * Adds a student to a class
+ */
+router.put('/signup/:id', (req:Request, res:Response) => {
+    // Takes in an array of tuple arrays
+    let newStudent:{} = {
+        student:req.body.studentid,
+        grade:  ''
+    }
+    db.Class.updateOne(
+        {_id:req.params.id},
+        {$push: {students: newStudent}}
+    )
+    .then((c:IClass) => {
+        console.log("Successfully added student")
+        res.send(c)
+    })
+    .catch((err:Error) => {
+        console.log("Error:",err)
+    })
+})
+
+/**
+ * PUT
+ * Updates info about a class
+ */
+router.put('/:id', (req:Request, res:Response) => {
+    db.Class.findOneAndUpdate({_id:req.params.id}, req.body)
+    .then((c:IClass) => {
+        res.send(c)
+    })
+    .catch((err:Error) => {
+        console.log("Error:",err)
+    })
+})
+
+
+// Export the router
 module.exports = router

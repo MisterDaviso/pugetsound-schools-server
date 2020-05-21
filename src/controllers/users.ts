@@ -6,10 +6,19 @@ let db = require('../models')
 import {IUser} from '../models/user'
 const router = Router()
 
-// GET the stub route
-router.get('/', (req:Request, res:Response) => {
 
+/*****************************
+ * GET ROUTES
+ ****************************/
+
+/**
+ * GET
+ * @returns A stub message
+ */
+router.get('/', (req:Request, res:Response) => {
+    res.send({message: "There ain't nothin here for ya"})
 })
+
 /**
  * GET
  * @param position  To specify the student
@@ -50,14 +59,6 @@ router.get('/class/:classid', (req:Request, res:Response) => {
 })
 
 /**
- * PUT. Updates a a student's profile
- * @param id    The id of the student to update
- */
-router.put('/:id', (req:Request, res:Response) => {
-    
-})
-
-/**
  * GET
  * @param req.params.id The id of the student to return the classes of
  * @returns             All classes a student has signed up for
@@ -66,4 +67,22 @@ router.get('/classes/:id', (req:Request, res:Response) => {
 
 })
 
+/*****************************
+ * POST ROUTES
+ ****************************/
+
+/*****************************
+ * PUT ROUTES
+ ****************************/
+
+/**
+ * PUT. Updates a a student's profile
+ * @param id    The id of the student to update
+ */
+router.put('/:id', (req:Request, res:Response) => {
+    
+})
+
+
+// Export the router
 module.exports = router
