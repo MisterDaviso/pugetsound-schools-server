@@ -1,5 +1,6 @@
 /**
- * Classes Controller
+ * CLASSES CONTROLLER
+ * All routes to get, put or post Class model data goes here
  */
 import {Request, Response, Router} from 'express'
 let db = require('../models')

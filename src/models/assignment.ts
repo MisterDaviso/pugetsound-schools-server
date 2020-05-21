@@ -1,3 +1,6 @@
+/**
+ * ASSIGNMENT MODEL
+ */
 import * as mongoose from 'mongoose'
 import {Schema, Document} from 'mongoose'
 import {IClass} from './class'
