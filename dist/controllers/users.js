@@ -9,7 +9,11 @@ var router = express_1.Router();
 // GET the stub route
 router.get('/', function (req, res) {
 });
-// GET all students
+/**
+ * GET
+ * @param position  To specify the student
+ * @returns         All students
+ */
 router.get('/students', function (req, res) {
     db.User.find({ position: 'student' })
         .then(function (students) {
@@ -19,7 +23,11 @@ router.get('/students', function (req, res) {
         console.log("Error:", err);
     });
 });
-// GET all teachers
+/**
+ * GET
+ * @param position  To specify the search for a teacher
+ * @returns         All teachers
+ */
 router.get('/teachers', function (req, res) {
     db.User.find({ position: 'teacher' })
         .then(function (teachers) {
@@ -29,10 +37,24 @@ router.get('/teachers', function (req, res) {
         console.log("Error:", err);
     });
 });
-// GET students by class
+/**
+ * GET.
+ * @param classid   The class to search for
+ * @returns         All the students in a particular class
+ */
 router.get('/class/:classid', function (req, res) {
 });
-// PUT updated info into a user's profile
-router.put('/', function (req, res) {
+/**
+ * PUT. Updates a a student's profile
+ * @param id    The id of the student to update
+ */
+router.put('/:id', function (req, res) {
+});
+/**
+ * GET
+ * @param req.params.id The id of the student to return the classes of
+ * @returns             All classes a student has signed up for
+ */
+router.get('/classes/:id', function (req, res) {
 });
 module.exports = router;

@@ -6,7 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
 var db = require('../models');
 var router = express_1.Router();
-// GET all classes
+/**
+ * GET
+ * @returns All classes in the db
+ */
 router.get('/', function (req, res) {
     db.Class.find()
         .then(function (c) {
@@ -18,7 +21,10 @@ router.get('/', function (req, res) {
         console.log("Error:", err);
     });
 });
-// POST a new class
+/**
+ * POST
+ * Adds a new class to the database.
+ */
 router.post('/', function (req, res) {
     db.Class.create(req.body)
         .then(function (c) {
@@ -28,7 +34,11 @@ router.post('/', function (req, res) {
         console.log("Error:", err);
     });
 });
-// GET a class by ID 
+/**
+ * GET
+ * @returns the specified class
+ * @param id, The id of the class to return
+ */
 router.get('/:id', function (req, res) {
     db.Class.findOne({ _id: req.params.id })
         .then(function (c) {
@@ -38,7 +48,10 @@ router.get('/:id', function (req, res) {
         console.log("Error:", err);
     });
 });
-// PUT a student that signs up in a class
+/**
+ * PUT
+ * Adds a student to a class
+ */
 router.put('/signup/:id', function (req, res) {
     // Takes in an array of tuple arrays
     var newStudent = {
@@ -54,7 +67,10 @@ router.put('/signup/:id', function (req, res) {
         console.log("Error:", err);
     });
 });
-// PUT updated info into a class by ID
+/**
+ * PUT
+ * Updates info about a class
+ */
 router.put('/:id', function (req, res) {
     db.Class.findOneAndUpdate({ _id: req.params.id }, req.body)
         .then(function (c) {
@@ -64,7 +80,11 @@ router.put('/:id', function (req, res) {
         console.log("Error:", err);
     });
 });
-// GET all classes for a specified student
+/**
+ * GET
+ * @returns All classes a student has signed up for
+ * @param id, The student's id
+ */
 router.get('/student/:id', function (req, res) {
     db.Class.find({ students: { $elemMatch: { student: req.params.id } } })
         .then(function (classes) {
@@ -74,7 +94,11 @@ router.get('/student/:id', function (req, res) {
         console.log("Error:", err);
     });
 });
-// GET all classes for a specified teacher
+/**
+ * GET
+ * @returns All classes taught by a specified teacher
+ * @param id, The teacher's id
+ */
 router.get('/teacher/:id', function (req, res) {
     db.Class.find({ teacher: req.params.id })
         .then(function (classes) {

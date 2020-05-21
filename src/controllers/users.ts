@@ -10,7 +10,11 @@ const router = Router()
 router.get('/', (req:Request, res:Response) => {
 
 })
-// GET all students
+/**
+ * GET
+ * @param position  To specify the student
+ * @returns         All students
+ */
 router.get('/students', (req:Request, res:Response) => {
     db.User.find({position:'student'})
     .then((students:[IUser]) => {
@@ -20,7 +24,12 @@ router.get('/students', (req:Request, res:Response) => {
         console.log("Error:",err)
     })
 })
-// GET all teachers
+
+/**
+ * GET
+ * @param position  To specify the search for a teacher
+ * @returns         All teachers
+ */
 router.get('/teachers', (req:Request, res:Response) => {
     db.User.find({position:'teacher'})
     .then((teachers:[IUser]) => {
@@ -30,13 +39,31 @@ router.get('/teachers', (req:Request, res:Response) => {
         console.log("Error:",err)
     })
 })
-// GET students by class
+
+/**
+ * GET. 
+ * @param classid   The class to search for
+ * @returns         All the students in a particular class
+ */
 router.get('/class/:classid', (req:Request, res:Response) => {
     
 })
-// PUT updated info into a user's profile
-router.put('/', (req:Request, res:Response) => {
+
+/**
+ * PUT. Updates a a student's profile
+ * @param id    The id of the student to update
+ */
+router.put('/:id', (req:Request, res:Response) => {
     
+})
+
+/**
+ * GET
+ * @param req.params.id The id of the student to return the classes of
+ * @returns             All classes a student has signed up for
+ */
+router.get('/classes/:id', (req:Request, res:Response) => {
+
 })
 
 module.exports = router

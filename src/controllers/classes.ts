@@ -4,10 +4,12 @@
 import {Request, Response, Router} from 'express'
 let db = require('../models')
 import {IClass} from '../models/class'
-import {IUser} from '../models/user'
 const router = Router()
 
-// GET all classes
+/**
+ * GET
+ * @returns All classes in the db
+ */
 router.get('/', (req:Request, res:Response) => {
     db.Class.find()
     .then((c:[IClass]) => {
@@ -19,7 +21,11 @@ router.get('/', (req:Request, res:Response) => {
         console.log("Error:",err)
     })
 })
-// POST a new class
+
+/**
+ * POST 
+ * Adds a new class to the database.
+ */
 router.post('/', (req:Request, res:Response) => {
     db.Class.create(req.body)
     .then((c:IClass) => {
@@ -29,7 +35,12 @@ router.post('/', (req:Request, res:Response) => {
         console.log("Error:",err)
     })
 })
-// GET a class by ID 
+
+/**
+ * GET
+ * @returns the specified class
+ * @param id, The id of the class to return
+ */
 router.get('/:id', (req:Request, res:Response) => {
     db.Class.findOne({_id:req.params.id})
     .then((c:IClass) => {
@@ -39,7 +50,11 @@ router.get('/:id', (req:Request, res:Response) => {
         console.log("Error:",err)
     })
 })
-// PUT a student that signs up in a class
+
+/**
+ * PUT
+ * Adds a student to a class
+ */
 router.put('/signup/:id', (req:Request, res:Response) => {
     // Takes in an array of tuple arrays
     let newStudent:{} = {
@@ -58,7 +73,11 @@ router.put('/signup/:id', (req:Request, res:Response) => {
         console.log("Error:",err)
     })
 })
-// PUT updated info into a class by ID
+
+/**
+ * PUT
+ * Updates info about a class
+ */
 router.put('/:id', (req:Request, res:Response) => {
     db.Class.findOneAndUpdate({_id:req.params.id}, req.body)
     .then((c:IClass) => {
@@ -68,7 +87,12 @@ router.put('/:id', (req:Request, res:Response) => {
         console.log("Error:",err)
     })
 })
-// GET all classes a student HAS signed up for
+
+/**
+ * GET
+ * @returns All classes a student has signed up for
+ * @param id, The student's id
+ */
 router.get('/student/:id', (req:Request, res:Response) => {
     db.Class.find({students: {$elemMatch: {student: req.params.id}}})
     .then((classes:[IClass]) => {
@@ -78,11 +102,12 @@ router.get('/student/:id', (req:Request, res:Response) => {
         console.log("Error:",err)
     })
 })
-// GET all classes a student has NOT signed up for
-router.get('/not/student/id', (req:Request, res:Response) => {
-    
-})
-// GET all classes for a specified teacher
+
+/**
+ * GET
+ * @returns All classes taught by a specified teacher
+ * @param id, The teacher's id
+ */
 router.get('/teacher/:id', (req:Request, res:Response) => {
     db.Class.find({teacher: req.params.id})
     .then((classes:[IClass]) => {
