@@ -11,6 +11,8 @@ const router = Router()
 router.get('/', (req:Request, res:Response) => {
     db.Class.find()
     .then((c:[IClass]) => {
+        console.log("Class:",c[0])
+        console.log("Students:",c[0].students)
         res.send(c)
     })
     .catch((err:Error) => {
@@ -66,15 +68,19 @@ router.put('/:id', (req:Request, res:Response) => {
         console.log("Error:",err)
     })
 })
-// GET all classes for a specified student
+// GET all classes a student HAS signed up for
 router.get('/student/:id', (req:Request, res:Response) => {
-    db.Class.find({students: req.params.id})
+    db.Class.find({students: {$elemMatch: {student: req.params.id}}})
     .then((classes:[IClass]) => {
         res.send(classes)
     })
     .catch((err:Error) => {
         console.log("Error:",err)
     })
+})
+// GET all classes a student has NOT signed up for
+router.get('/not/student/id', (req:Request, res:Response) => {
+    
 })
 // GET all classes for a specified teacher
 router.get('/teacher/:id', (req:Request, res:Response) => {

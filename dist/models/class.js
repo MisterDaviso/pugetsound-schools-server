@@ -26,7 +26,10 @@ var ClassSchema = new mongoose_1.Schema({
     subject: { type: String, required: true },
     teacher: { type: mongoose_1.Schema.Types.ObjectId, required: true },
     students: {
-        type: [{ student: mongoose_1.Schema.Types.ObjectId, grade: String }],
+        type: [{
+                student: mongoose_1.Schema.Types.ObjectId,
+                grade: String
+            }],
         default: []
     },
     assignments: { type: [mongoose_1.Schema.Types.ObjectId], default: [] },

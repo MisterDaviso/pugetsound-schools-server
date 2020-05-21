@@ -10,6 +10,8 @@ var router = express_1.Router();
 router.get('/', function (req, res) {
     db.Class.find()
         .then(function (c) {
+        console.log("Class:", c[0]);
+        console.log("Students:", c[0].students);
         res.send(c);
     })
         .catch(function (err) {
@@ -64,7 +66,7 @@ router.put('/:id', function (req, res) {
 });
 // GET all classes for a specified student
 router.get('/student/:id', function (req, res) {
-    db.Class.find({ students: req.params.id })
+    db.Class.find({ students: { $elemMatch: { student: req.params.id } } })
         .then(function (classes) {
         res.send(classes);
     })

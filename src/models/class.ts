@@ -18,7 +18,10 @@ const ClassSchema: Schema = new Schema({
     subject:    {type:String, required:true},
     teacher:    {type:Schema.Types.ObjectId, required:true},
     students:   {
-        type:[{student:Schema.Types.ObjectId, grade:String}], 
+        type:[{
+            student:Schema.Types.ObjectId, 
+            grade:String
+        }], 
         default: []
     },
     assignments:{type:[Schema.Types.ObjectId], default:[]},
