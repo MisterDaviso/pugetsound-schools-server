@@ -25,7 +25,7 @@ router.get('/', (req:Request,res:Response) => {
  * @param classid   The id of the class to search for
  */
 router.get('/class/:classid', (req:Request, res:Response) => {
-    db.Assignment.find({class :req.params.classId})
+    db.Assignment.find({class :req.params.classid})
     .then((assignment:IAssignment)=>{
         res.send(assignment)
     })
@@ -96,7 +96,8 @@ router.post('/class/:classid', (req:Request, res:Response) => {
         teacher: req.body.teacher,
         students: students,
         question: req.body.question,
-        dateDue: req.body.dateDue
+        dateDue: req.body.dateDue,
+        dateAssigned: req.body.dateAssigned
     })
     .then((assignment:IAssignment) => {
         res.send(assignment)
