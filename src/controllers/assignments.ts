@@ -95,8 +95,8 @@ router.post('/class/:classid', (req:Request, res:Response) => {
         class: req.params.classid,
         teacher: req.body.teacher,
         students: students,
-        question: req.body.question
-
+        question: req.body.question,
+        dateDue: req.body.dateDue
     })
     .then((assignment:IAssignment) => {
         res.send(assignment)

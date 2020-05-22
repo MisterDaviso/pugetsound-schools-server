@@ -92,7 +92,8 @@ router.post('/class/:classid', function (req, res) {
         class: req.params.classid,
         teacher: req.body.teacher,
         students: students,
-        question: req.body.question
+        question: req.body.question,
+        dateDue: req.body.dateDue
     })
         .then(function (assignment) {
         res.send(assignment);
