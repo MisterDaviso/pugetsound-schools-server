@@ -109,29 +109,6 @@ router.post('/', (req:Request, res:Response) => {
 
 /**
  * PUT
- * Adds a student to a class
- */
-router.put('/signup/:id', (req:Request, res:Response) => {
-    // Takes in an array of tuple arrays
-    let newStudent:{} = {
-        student:req.body.studentid,
-        grade:  ''
-    }
-    db.Class.updateOne(
-        {_id:req.params.id},
-        {$push: {students: newStudent}}
-    )
-    .then((c:IClass) => {
-        console.log("Successfully added student")
-        res.send(c)
-    })
-    .catch((err:Error) => {
-        console.log("Error:",err)
-    })
-})
-
-/**
- * PUT
  * Updates info about a class
  */
 router.put('/:id', (req:Request, res:Response) => {

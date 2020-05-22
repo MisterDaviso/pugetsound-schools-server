@@ -100,7 +100,11 @@ router.post('/class/:classid', (req:Request, res:Response) => {
         dateAssigned: req.body.dateAssigned
     })
     .then((assignment:IAssignment) => {
-        res.send(assignment)
+        db.Class.updateOne({_id:req.params.classid}, {$push: {assignments: assignment._id}})
+        .then(() => {res.send(assignment)})
+        .catch((err:Error) => {
+            console.log("Error:",err)
+        })
     })
     .catch((err:Error) => {
         console.log("Error:",err)
