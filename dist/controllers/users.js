@@ -128,20 +128,20 @@ router.put('/classes/:id', function (req, res) {
         console.log("Classes to leave:", resign);
         // Third, remove the student from their old classes
         db.Class.updateMany({ _id: { $in: resign } }, { $pull: { students: { student: req.params.id } } })
-            .then(function (cs) {
+            .then(function (classRemove) {
             // Fourth, add the student to their new classes
-            console.log("Classes resigned from:", cs);
+            console.log("Classes resigned from:", classRemove);
             var newStudent = {
                 student: req.params.id,
                 grade: ''
             };
             db.Class.updateMany({ _id: { $in: signup } }, { $push: { students: newStudent } })
-                .then(function (css) {
-                console.log("Classes signed up to:", css);
-                db.User.update({ _id: req.params.id }, { classes: signup })
-                    .then(function (student) {
-                    console.log("Classes given to student:", student);
-                    res.send(student);
+                .then(function (classAdd) {
+                console.log("Classes signed up to:", classAdd);
+                db.User.update({ _id: req.params.id }, { classes: newClassIds })
+                    .then(function (studentChange) {
+                    console.log("Classes given to student:", studentChange);
+                    res.send(studentChange);
                 })
                     .catch(function (err) { console.log("Broke adding classes to student:", err); });
             })

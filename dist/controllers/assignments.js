@@ -23,7 +23,7 @@ router.get('/', function (req, res) {
  * @param classid   The id of the class to search for
  */
 router.get('/class/:classid', function (req, res) {
-    db.Assignment.find({ class: req.params.classId })
+    db.Assignment.find({ class: req.params.classid })
         .then(function (assignment) {
         res.send(assignment);
     })
@@ -93,7 +93,8 @@ router.post('/class/:classid', function (req, res) {
         teacher: req.body.teacher,
         students: students,
         question: req.body.question,
-        dateDue: req.body.dateDue
+        dateDue: req.body.dateDue,
+        dateAssigned: req.body.dateAssigned
     })
         .then(function (assignment) {
         res.send(assignment);

@@ -129,7 +129,7 @@ router.put('/classes/:id', (req:Request, res:Response) => {
         let resign:any[] = []
         currentClassIds.forEach((c:string) => { if(!newClassIds.includes(c)) {resign.push(c)} })
         newClassIds.forEach((c:string) => { if(!currentClassIds.includes(c)) {signup.push(c)} })
-        
+
         console.log("Classes to sign up for:",signup)
         console.log("Classes to leave:",resign)
         
@@ -138,9 +138,9 @@ router.put('/classes/:id', (req:Request, res:Response) => {
             {_id: {$in: resign}}, 
             {$pull: {students: {student:req.params.id}}}
         )
-        .then((cs:[IClass]) => {
+        .then((classRemove:{}) => {
             // Fourth, add the student to their new classes
-            console.log("Classes resigned from:",cs)
+            console.log("Classes resigned from:",classRemove)
             let newStudent:{} = {
                 student: req.params.id,
                 grade: ''
@@ -149,12 +149,12 @@ router.put('/classes/:id', (req:Request, res:Response) => {
                 {_id: {$in: signup}}, 
                 {$push: {students: newStudent}}
             )
-            .then((css:[IClass]) => {
-                console.log("Classes signed up to:",css)
-                db.User.update({_id:req.params.id}, {classes:signup})
-                .then((student:IUser) => {
-                    console.log("Classes given to student:",student)
-                    res.send(student)
+            .then((classAdd:{}) => {
+                console.log("Classes signed up to:",classAdd)
+                db.User.update({_id:req.params.id}, {classes:newClassIds})
+                .then((studentChange:IUser) => {
+                    console.log("Classes given to student:",studentChange)
+                    res.send(studentChange)
                 })
                 .catch((err:Error) => {console.log("Broke adding classes to student:",err)})
             })
