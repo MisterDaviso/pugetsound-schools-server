@@ -97,7 +97,11 @@ router.post('/class/:classid', function (req, res) {
         dateAssigned: req.body.dateAssigned
     })
         .then(function (assignment) {
-        res.send(assignment);
+        db.Class.updateOne({ _id: req.params.classid }, { $push: { assignments: assignment._id } })
+            .then(function () { res.send(assignment); })
+            .catch(function (err) {
+            console.log("Error:", err);
+        });
     })
         .catch(function (err) {
         console.log("Error:", err);

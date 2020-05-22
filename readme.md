@@ -47,11 +47,11 @@ The User model is used to build both students and teachers
 
 | Column | Type | Notes |
 |----------|----------|--------------------|
-|firstname| String |  |
-|lastname| String |  |
+|firstname| String | The user's Given Name |
+|lastname| String | The user's Surname |
 |password| String | A hashed version of the user's password |
-|email| String |  |
-|birthdate| Date |  |
+|email| String | The user's email. Must be unique. |
+|birthdate| Date | The user's birthdate. |
 |admin| Boolean | Determines if the user has Administrator permissions |
 |position| String | Specifies whether the user is a Student or Teacher |
 |grade| String | Only necessary for Student users. Contains their overall grade. |
@@ -73,12 +73,12 @@ The User model is used to build both students and teachers
 ### Assignment
 | Column | Type | Notes |
 |----------|----------|--------------------|
-|class| ObjectId |  |
-|teacher| ObjectId |  |
-|students| [ObjectId, String, String] |  |
-|questions| String |  |
-|dateAssigned| Date |  |
-|dateDue| Date |  |
+|class| ObjectId | Reference ID for the class the assignment is assigned to |
+|teacher| ObjectId | Reference ID for the teacher in charge of the class |
+|students| {id:ObjectId, grade:String, answer:String} | "id" is the reference ID of a student; "grade" is how well the student performed; and "answer" is the response the student provided |
+|questions| String | The questions that make up the assignment |
+|dateAssigned| Date | The date the assignment begins |
+|dateDue| Date | The date the assignment must be complete |
 
 ## Required Technologies
 * TypeScript
