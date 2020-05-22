@@ -79,3 +79,8 @@ Server-side code, including database management and routes
 
 ## Required Technologies
 * TypeScript
+
+## Instructions for Use
+
+### Assign a JWT token
+Create an evironment variable called "JWT_SECRET"
