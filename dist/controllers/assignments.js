@@ -23,7 +23,7 @@ router.get('/', function (req, res) {
  * @param classid   The id of the class to search for
  */
 router.get('/class/:classid', function (req, res) {
-    db.Assignment.find({ class: req.params.classId })
+    db.Assignment.find({ class: req.params.classid })
         .then(function (assignment) {
         res.send(assignment);
     })
@@ -69,8 +69,6 @@ router.get('/:id', function (req, res) {
  * @param req.body.teacher      The id of the teacher who made the assignment
  * @param req.body.students     An array of student ref id's
  * @param req.body.question     A string containing the question(s)
- *
- * @todo Remove students as a req.body requirement
  */
 router.post('/class/:classid', function (req, res) {
     var studentArray;
@@ -89,6 +87,8 @@ router.post('/class/:classid', function (req, res) {
         });
     });
     db.Assignment.create({
+        dateDue: req.body.dateDue,
+        dateAssigned: req.body.dateAssigned,
         class: req.params.classid,
         teacher: req.body.teacher,
         students: students,
