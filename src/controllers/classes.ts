@@ -5,6 +5,7 @@
 import {Request, Response, Router} from 'express'
 let db = require('../models')
 import {IClass} from '../models/class'
+import { IUser } from '../models/user'
 const router = Router()
 
 /*****************************
@@ -79,9 +80,23 @@ router.get('/teacher/:id', (req:Request, res:Response) => {
  * Adds a new class to the database.
  */
 router.post('/', (req:Request, res:Response) => {
-    db.Class.create(req.body)
-    .then((c:IClass) => {
-        res.send(c)
+    db.User.find({_id:req.body.teacher})
+    .then((teacher:IUser) => {
+        let name = teacher.firstname + " " + teacher.lastname
+        db.Class.create({
+            classname: req.body.classname,
+            subject: req.body.subject,
+            teacher: req.body.teacher, 
+            teachername: name,
+            startdate: req.body.startdate,
+            enddate: req.body.enddate,
+        })
+        .then((c:IClass) => {
+            res.send(c)
+        })
+        .catch((err:Error) => {
+            console.log("Error:",err)
+        })
     })
     .catch((err:Error) => {
         console.log("Error:",err)

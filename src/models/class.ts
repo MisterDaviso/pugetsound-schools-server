@@ -7,6 +7,7 @@ export interface IClass extends Document {
     classname:  string;
     subject:    string;
     teacher:    IUser['_id'];
+    teachername:string;
     students:   [IUser['_id'],string];
     assignments:IAssignment['_id'][];
     startdate:  Date;
@@ -17,6 +18,7 @@ const ClassSchema: Schema = new Schema({
     classname:  {type:String, required:true},
     subject:    {type:String, required:true},
     teacher:    {type:Schema.Types.ObjectId, required:true},
+    teachername:{type:String, required:true},
     students:   {
         type:[{
             student:Schema.Types.ObjectId, 
