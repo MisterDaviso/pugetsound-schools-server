@@ -15,8 +15,6 @@ app.use(morgan('dev'))
 
 app.use(cors())
   // ADD REACT APP FOR CORS HERE
-  // origin: 'https://myreactapp.herokuapp.com'
-
 
 app.use(express.urlencoded({ extended: false })) // Accept form data
 app.use(express.json()) // Accept data from fetch (or any AJAX call)

@@ -82,8 +82,12 @@ The User model is used to build both students and teachers
 
 ## Required Technologies
 * TypeScript
+* MongoDB and Mongoose
 
 ## Instructions for Use
 
 ### Assign a JWT token
 Create an evironment variable called "JWT_SECRET"
+
+### Change variable references to reflect your project
+* Change the "name" property of package.json to reflect your project

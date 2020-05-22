@@ -1,6 +1,5 @@
 /**
  * @name ASSIGNMENT
- * @todo Add 
  */
 import * as mongoose from 'mongoose'
 import {Schema, Document} from 'mongoose'
