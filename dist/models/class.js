@@ -25,6 +25,7 @@ var ClassSchema = new mongoose_1.Schema({
     classname: { type: String, required: true },
     subject: { type: String, required: true },
     teacher: { type: mongoose_1.Schema.Types.ObjectId, required: true },
+    teachername: { type: String, required: true },
     students: {
         type: [{
                 student: mongoose_1.Schema.Types.ObjectId,

@@ -73,9 +73,23 @@ router.get('/teacher/:id', function (req, res) {
  * Adds a new class to the database.
  */
 router.post('/', function (req, res) {
-    db.Class.create(req.body)
-        .then(function (c) {
-        res.send(c);
+    db.User.find({ _id: req.body.teacher })
+        .then(function (teacher) {
+        var name = teacher.firstname + " " + teacher.lastname;
+        db.Class.create({
+            classname: req.body.classname,
+            subject: req.body.subject,
+            teacher: req.body.teacher,
+            teachername: name,
+            startdate: req.body.startdate,
+            enddate: req.body.enddate,
+        })
+            .then(function (c) {
+            res.send(c);
+        })
+            .catch(function (err) {
+            console.log("Error:", err);
+        });
     })
         .catch(function (err) {
         console.log("Error:", err);
