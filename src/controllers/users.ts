@@ -39,6 +39,16 @@ router.get('/students', (req:Request, res:Response) => {
 
 /**
  * GET
+ * @returns             The specified student
+ * @param req.params.id The student's id
+ */
+router.get('/students/:id', (req:Request, res:Response) => {
+    db.User.findOne({_id: req.params.id})
+    .then((user:IUser) => {res.send(user)})
+})
+
+/**
+ * GET
  * @returns         All teachers
  * @param position  To specify the search for a teacher
  */
@@ -105,37 +115,55 @@ router.put('/classes/:id', (req:Request, res:Response) => {
         // Second, create two new arrays: Old classes and new classes
             // One is classes the student is no longer signed up for,
             // The other are their new classes
-        let currentClassIds:any[] = currentClasses.map(c => {return c._id})
+        let currentClassIds:any[] = currentClasses.map(c => {return `${c._id}`})
+        let newClassIds:any[]
+        if(Array.isArray(req.body.classes)) {
+            newClassIds = req.body.classes
+        } else if(req.body.classes){
+            newClassIds = [req.body.classes]
+        } else {
+            newClassIds = []
+        }
+        console.log("Current Class ID's", currentClassIds)
         let signup:any[] = []
         let resign:any[] = []
-        currentClassIds.forEach((c:string) => { if(!req.body.classes.includes(c)) {resign.push(c)} })
-        req.body.classes.forEach((c:string) => { if(!currentClassIds.includes(c)) {signup.push(c)} })
+        currentClassIds.forEach((c:string) => { if(!newClassIds.includes(c)) {resign.push(c)} })
+        newClassIds.forEach((c:string) => { if(!currentClassIds.includes(c)) {signup.push(c)} })
+        
+        console.log("Classes to sign up for:",signup)
+        console.log("Classes to leave:",resign)
+        
         // Third, remove the student from their old classes
-        db.Class.update(
-            {students: {$elemMatch: {student: {$in: resign}}}}, 
-            {$pull: {students: {$elemMatch: {student:req.params.id}}}}
+        db.Class.updateMany(
+            {_id: {$in: resign}}, 
+            {$pull: {students: {student:req.params.id}}}
         )
-        .then(() => {
+        .then((cs:[IClass]) => {
             // Fourth, add the student to their new classes
+            console.log("Classes resigned from:",cs)
             let newStudent:{} = {
-                student: req.body.id,
+                student: req.params.id,
                 grade: ''
             }
-            db.Class.update(
-                {students: {$elemMatch: {student: {$in: signup}}}}, 
+            db.Class.updateMany(
+                {_id: {$in: signup}}, 
                 {$push: {students: newStudent}}
             )
-            .then(() => {
-                db.User.update({_id:req.params.id}, {classes:currentClassIds})
-                .then((student:IUser) => {res.send(student)})
-                .catch((err:Error) => {console.log("Error:",err)})
+            .then((css:[IClass]) => {
+                console.log("Classes signed up to:",css)
+                db.User.update({_id:req.params.id}, {classes:signup})
+                .then((student:IUser) => {
+                    console.log("Classes given to student:",student)
+                    res.send(student)
+                })
+                .catch((err:Error) => {console.log("Broke adding classes to student:",err)})
             })
-            .catch((err:Error) => {console.log("Error:",err)})
+            .catch((err:Error) => {console.log("Broke adding student to classes:",err)})
         })
-        .catch((err:Error) => {console.log("Error:",err)})
+        .catch((err:Error) => {console.log("Broke resigning the student for classes:",err)})
     })
     .catch((err:Error) => {
-        console.log("Error:",err)
+        console.log("Broke getting classes the student signed up for:",err)
     })
 })
 
