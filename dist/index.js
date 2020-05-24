@@ -17,7 +17,6 @@ var rowdyResults = rowdyLogger.begin(app);
 app.use(morgan('dev'));
 app.use(cors());
 // ADD REACT APP FOR CORS HERE
-// origin: 'https://myreactapp.herokuapp.com'
 app.use(express_1.default.urlencoded({ extended: false })); // Accept form data
 app.use(express_1.default.json()); // Accept data from fetch (or any AJAX call)
 // Routes

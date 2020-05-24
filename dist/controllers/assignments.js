@@ -110,5 +110,13 @@ router.post('/class/:classid', function (req, res) {
 /*****************************
  * PUT ROUTES
  ****************************/
+/*****************************
+ * DELETE ROUTES
+ ****************************/
+router.delete('/:id', function (req, res) {
+    db.Assignment.delete({ _id: req.params.id })
+        .then(function (response) { res.send(response); })
+        .catch(function (err) { console.log("Error:", err); });
+});
 // Export the router
 module.exports = router;

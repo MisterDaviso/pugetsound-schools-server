@@ -29,6 +29,7 @@ Server-side code, including database management and routes
 |GET| `/teacher/:id` | Returns all classes a teacher is in control of |
 |POST| `/` | Creates a new Class |
 |PUT| `/:id` | Updates class by ID |
+|DELETE| `/:id` | Deletes a class and all assignments attached to it and removes it from teachers and students |
 
 ### Assignments Routes
 |Method|Path|Purpose|
@@ -38,6 +39,7 @@ Server-side code, including database management and routes
 |GET| `/student/:studentid` | Returns all assignments assigned to a student |
 |GET| `/:id` |  |
 |POST| `/class/:classid` |  |
+|DELETE| `/:id` | Deletes a particular assignment
 
 ## Models
 
