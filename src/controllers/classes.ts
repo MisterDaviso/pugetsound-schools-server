@@ -80,9 +80,12 @@ router.get('/teacher/:id', (req:Request, res:Response) => {
  * Adds a new class to the database.
  */
 router.post('/', (req:Request, res:Response) => {
-    db.User.find({_id:req.body.teacher})
+    console.log("req.body.teacher",req.body.teacher)
+    db.User.findOne({_id:req.body.teacher})
     .then((teacher:IUser) => {
+        console.log("teacher from Db",teacher)
         let name = teacher.firstname + " " + teacher.lastname
+        console.log("name", name)
         db.Class.create({
             classname: req.body.classname,
             subject: req.body.subject,
