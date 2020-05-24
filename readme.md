@@ -1,5 +1,14 @@
 # PugetSound Schools Server
+
 Server-side code, including database management and routes
+Deployed Link: https://pugetsound-schools-server.herokuapp.com/
+
+### Client Side
+
+This repository works in tandem with its sister repository, which contains all the client-side code.
+
+Repository Link: https://github.com/ObtuseSpruce/pugetsound-client
+Deployed LInk: https://pugetsoundclient.herokuapp.com/
 
 ## Routes
 
