@@ -115,6 +115,15 @@ router.post('/class/:classid', (req:Request, res:Response) => {
  * PUT ROUTES
  ****************************/
 
+/*****************************
+ * DELETE ROUTES
+ ****************************/
+
+router.delete('/:id', (req:Request, res:Response) => {
+    db.Assignment.delete({_id:req.params.id})
+    .then((response:any) => {res.send(response)})
+    .catch((err:Error) => {console.log("Error:",err)})
+})
 
 // Export the router
 module.exports = router

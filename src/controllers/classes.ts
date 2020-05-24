@@ -124,6 +124,15 @@ router.put('/:id', (req:Request, res:Response) => {
     })
 })
 
+/*****************************
+ * DELETE ROUTES
+ ****************************/
+
+router.delete('/:id', (req:Request, res:Response) => {
+    db.Class.delete({_id:req.params.id})
+    .then((response:any) => {res.send(response)})
+    .catch((err:Error) => {console.log("Error:",err)})
+})
 
 // Export the router
 module.exports = router
