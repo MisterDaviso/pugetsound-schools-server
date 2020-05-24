@@ -130,23 +130,28 @@ router.put('/:id', (req:Request, res:Response) => {
 
 router.delete('/:id', (req:Request, res:Response) => {
     // First, remove the class from the teachers and students in it
-    db.User.updateMany({$elemMatch: {classes: req.params.id}}, {$pull: {classes: {_id:req.params.id}}})
-    .then((userUpdate:any) => {
-        console.log("Result of deleting from users:", userUpdate)
-        // Second, delete all assignments for that class
-        db.Assignment.delete({class:req.params.id})
-        .then((assignmentDelete:any) => {
-            console.log("Result of deleting assignments:", assignmentDelete)
-            // Third, delete the class itself
-            db.Class.delete({_id:req.params.id})
-            .then((classDelete:any) => {
-                res.send(classDelete)
+    db.Class.findOne({_id:req.params.id})
+    .then((cl:IClass) => {
+        console.log("CLass",cl)
+        // Commented lines: 
+        db.User.updateMany({classes: `${req.params.id}`}, {$pull: {classes: `${req.params.id}`}})
+        .then((userUpdate:any) => {
+            console.log("Result of deleting from users:", userUpdate)
+            // Second, delete all assignments for that class
+            db.Assignment.deleteMany({class:req.params.id})
+            .then((assignmentDelete:any) => {
+                console.log("Result of deleting assignments:", assignmentDelete)
+                // Third, delete the class itself
+                db.Class.deleteOne({_id:req.params.id})
+                .then((classDelete:any) => {
+                    res.send(classDelete)
+                })
+                .catch((err:Error) => {console.log("Error:",err)})
             })
             .catch((err:Error) => {console.log("Error:",err)})
         })
         .catch((err:Error) => {console.log("Error:",err)})
     })
-    .catch((err:Error) => {console.log("Error:",err)})
 })
 
 // Export the router

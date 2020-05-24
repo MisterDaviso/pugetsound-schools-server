@@ -119,23 +119,28 @@ router.put('/:id', function (req, res) {
  ****************************/
 router.delete('/:id', function (req, res) {
     // First, remove the class from the teachers and students in it
-    db.User.updateMany({ $elemMatch: { classes: req.params.id } }, { $pull: { classes: { _id: req.params.id } } })
-        .then(function (userUpdate) {
-        console.log("Result of deleting from users:", userUpdate);
-        // Second, delete all assignments for that class
-        db.Assignment.delete({ class: req.params.id })
-            .then(function (assignmentDelete) {
-            console.log("Result of deleting assignments:", assignmentDelete);
-            // Third, delete the class itself
-            db.Class.delete({ _id: req.params.id })
-                .then(function (classDelete) {
-                res.send(classDelete);
+    db.Class.findOne({ _id: req.params.id })
+        .then(function (cl) {
+        console.log("CLass", cl);
+        // Commented lines: 
+        db.User.updateMany({ classes: "" + req.params.id }, { $pull: { classes: "" + req.params.id } })
+            .then(function (userUpdate) {
+            console.log("Result of deleting from users:", userUpdate);
+            // Second, delete all assignments for that class
+            db.Assignment.deleteMany({ class: req.params.id })
+                .then(function (assignmentDelete) {
+                console.log("Result of deleting assignments:", assignmentDelete);
+                // Third, delete the class itself
+                db.Class.deleteOne({ _id: req.params.id })
+                    .then(function (classDelete) {
+                    res.send(classDelete);
+                })
+                    .catch(function (err) { console.log("Error:", err); });
             })
                 .catch(function (err) { console.log("Error:", err); });
         })
             .catch(function (err) { console.log("Error:", err); });
-    })
-        .catch(function (err) { console.log("Error:", err); });
+    });
 });
 // Export the router
 module.exports = router;
