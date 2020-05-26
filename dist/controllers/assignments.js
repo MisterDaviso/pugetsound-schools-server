@@ -113,8 +113,13 @@ router.post('/class/:classid', function (req, res) {
 /*****************************
  * DELETE ROUTES
  ****************************/
+/**
+ * DELETE
+ * Deletes a specified assignment
+ * @param req.params.id    The ID of the assignment to delete
+ */
 router.delete('/:id', function (req, res) {
-    db.Assignment.delete({ _id: req.params.id })
+    db.Assignment.deleteOne({ _id: req.params.id })
         .then(function (response) { res.send(response); })
         .catch(function (err) { console.log("Error:", err); });
 });
