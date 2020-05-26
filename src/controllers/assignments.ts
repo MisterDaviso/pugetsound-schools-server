@@ -119,8 +119,13 @@ router.post('/class/:classid', (req:Request, res:Response) => {
  * DELETE ROUTES
  ****************************/
 
+ /**
+  * DELETE
+  * Deletes a specified assignment
+  * @param req.params.id    The ID of the assignment to delete
+  */
 router.delete('/:id', (req:Request, res:Response) => {
-    db.Assignment.delete({_id:req.params.id})
+    db.Assignment.deleteOne({_id:req.params.id})
     .then((response:any) => {res.send(response)})
     .catch((err:Error) => {console.log("Error:",err)})
 })
